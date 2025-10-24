@@ -166,3 +166,205 @@ node src/logo-fix.js --url https://example.com/logo.png --out public/img/logos -
 ## License
 
 MIT (optional – füge ggf. eure Unternehmenslizenz ein).
+
+
+
+--------------------------
+
+
+Parameter (wichtig für Orchestrierung & Codex)
+
+page: Seitenpfad/Route, z. B. /produkte/glasbongs
+container: hero | slider | product
+brand: Brand‑Mood oder Kontext (freier Text)
+keywords: CSV‑Liste von Keywords (für SEO/Alt‑Generierung)
+desc: Kurzbeschreibung/Seitenkontext (fließt in Prompt & ALT)
+preset: hero_photoreal | slider_emotion | product_studio | product_transparent
+branch (optional): Ziel‑Branch für PR (sonst wird automatisch generiert)
+
+Best Practices (Qualität)
+
+Hero: „photorealistic, cinematic lighting, shallow DOF, natural grading“, Negatives gegen „CGI/Text/Low detail“.
+Slider: „ultra‑detailed macro, tactile textures, moody low‑key, realistic noise“, Serienkonsistenz durch konstante Prompts.
+Produkt: Edit‑Mode mit Originalfoto; „preserve exact proportions and labels“, Soft‑Shadow auf Weiß; generative Fallbacks als „Notfall“, nicht für 1:1‑Originaltreue.
+Transparenz: Für echte Alpha‑Transparenz Edits mit background:'transparent'; bei „Generate“ nicht durchgängig garantiert → BG‑Removal‑Fallback ist eingebaut.
+
+Sicherheit & Robustheit
+
+Secrets nie committen (nutze .env lokal bzw. GitHub Secrets im Repo).
+Logging: strukturierte Logs via pino; LOG_LEVEL steuerbar.
+Retries: exponential backoff bei API‑Fehlern.
+Validation: Ajv bricht bei kaputten Presets/Regeln mit klarer Fehlermeldung ab.
+
+2) Initialisierungs‑Prompt für ChatGPT/Codex
+
+Kopiere den folgenden Prompt in dein Agent‑/Codex‑Setup (auch als Datei vorhanden: ops/agent-init.md):
+
+System / Developer:
+
+Du bist der Automations-Agent für das Repository „ImageGen“. Deine Aufgaben:
+1) Baue auf Basis der Parameter page, container, brand, keywords, desc die Prompt-Metadaten (Prompt, ALT, Description, Keywords) mit `node src/prompt-builder.js`.
+2) Starte den Workflow `.github/workflows/orchestrate.yml` per GitHub REST Dispatch mit denselben Parametern.
+3) Warte, bis der Run abgeschlossen ist, und liefere die PR-URL sowie die geänderten Inhalte aus `content/images.json` zurück.
+
+Parameter:
+- page: z. B. /produkte/glasbongs
+- container: hero | slider | product
+- brand: Freitext (Brand-Mood)
+- keywords: CSV
+- desc: Kurzbeschreibung/Seitenkontext
+- preset: hero_photoreal | slider_emotion | product_studio | product_transparent
+- branch (optional): PR-Branchname
+
+Erfolgskriterien:
+- Ein PR ist erstellt.
+- content/images.json enthält Einträge für [page][container] mit `file`, `alt`, `description`, `keywords`.
+- Gib die relevanten Pfade und ALT/SEO in strukturierter Form aus.
+
+
+Hinweis: Wenn dein Agent GitHub‑Aktionen nicht abwarten kann, reiche er stattdessen die Run‑ID/PR‑Referenz zurück – die Workflows erledigen den Rest.
+
+3) Installation & Einrichtung (Schritt‑für‑Schritt)
+A. GitHub‑Repository anlegen
+Neues Repository in GitHub erstellen (z. B. imagegen).
+Actions aktivieren (Default‑Einstellungen sind OK; „Allow GitHub Actions to create and approve pull requests“ ggf. einschalten).
+Secrets setzen: Settings → Secrets and variables → Actions → New repository secret
+
+OPENAI_API_KEY: dein OpenAI API Key
+
+Alternativ via CLI:
+export OPENAI_API_KEY=sk-...
+bash scripts/setup-gh-secrets.sh   # nutzt gh CLI
+
+B. Code aus dem ZIP ins Repo
+
+Option 1 – Web‑UI:
+imagegen.zip entpacken → Inhalte ins Repo hochladen (Add files → Upload files) → committen.
+
+Option 2 – git/CLI:
+unzip imagegen.zip
+cd imagegen
+git init
+git remote add origin https://github.com/<OWNER>/<REPO>.git
+git add -A
+git commit -m "chore: bootstrap imagegen"
+git branch -M main
+git push -u origin main
+
+---------------------------------------------------------------------
+Codex/Agent:
+
+„Lade imagegen.zip hoch, entpacke ins Repo <OWNER/REPO>, committe auf main“ (der Agent kann die GitHub API benutzen).
+
+C. Lokaler Test (optional)
+cp .env.example .env         # trage deinen OPENAI_API_KEY ein
+bash scripts/install.sh      # Node 22 prüfen, npm ci, Struktur anlegen
+
+# Einfache Tests:
+node src/index.js --preset hero_photoreal --prompt "Growshop interior, cinematic"
+node src/content-linker.js --page "/produkte/glasbongs" --container hero
+
+Erste Orchestrierung (über GitHub Actions)
+
+UI‑Weg:
+GitHub → Actions → Orchestrate Images + Link + PR
+
+Inputs füllen:
+
+page: /produkte/glasbongs
+container: hero
+brand: GrowCologne
+keywords: Glasbong,Growshop Dortmund
+desc: Hero-Visual für Kategorie Glasbongs
+preset: hero_photoreal
+
+Workflow starten → er erstellt einen PR mit Bildern + content/images.json.
+
+REST‑Dispatch (z. B. aus Codex/Script):
+
+curl -X POST \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github+json" \
+  https://api.github.com/repos/OWNER/REPO/actions/workflows/orchestrate.yml/dispatches \
+  -d '{
+    "ref": "main",
+    "inputs": {
+      "page": "/produkte/glasbongs",
+      "container": "hero",
+      "brand": "GrowCologne",
+      "keywords": "Glasbong,Growshop Dortmund",
+      "desc": "Hero-Visual für Kategorie Glasbongs",
+      "preset": "hero_photoreal"
+    }
+  }'
+
+E. „Seite erstellen“ – was bedeutet das hier?
+
+„page“ ist bei uns ein Routen‑String (z. B. /produkte/glasbongs), den dein Frontend/CMS verwendet.
+Der Orchestrator erzeugt Bilder und schreibt in content/images.json:
+
+{
+  "/produkte/glasbongs": {
+    "hero": {
+      "file": "public/img/hero/hero-...-2880x1280.jpg",
+      "alt": "…",
+      "description": "…",
+      "keywords": ["Glasbong","Growshop Dortmund"],
+      "generatedAt": "…"
+    }
+  }
+}
+
+
+Dein Frontend kann content/images.json laden und – je nach Framework – das passende Bild + ALT in der Seite rendern.
+Beispiel Next.js (Pseudo):
+
+import db from '../content/images.json';
+export default function Page(){
+  const hero = db['/produkte/glasbongs']?.hero;
+  return hero ? <img src={`/${hero.file}`} alt={hero.alt} /> : null;
+}
+
+F. Logos‑Karussell (optional)
+
+Actions → Logos starten, mit url oder filePath.
+Ergebnis: bereinigtes PNG + optionales SVG in public/img/logos/…, automatischer PR.
+
+4) Schritt‑für‑Schritt: „Alles was wir gelernt haben“ – Beispielablauf
+Ziel: Neue Kategorie „Glasbongs“ bekommt ein Hero‑Bild, ALT/SEO sauber hinterlegt, PR erstellt.
+Orchestrate starten (UI oder REST) mit:
+
+page = /produkte/glasbongs
+container = hero
+brand = GrowCologne
+keywords = Glasbong,Growshop Dortmund
+desc = Hero-Visual für Kategorie Glasbongs
+preset = hero_photoreal
+Workflow Schritte:
+Prompt‑Meta wird generiert (inkl. ALT/SEO).
+OpenAI Images generiert das Asset, sharp erzeugt JPG/WebP/AVIF (inkl. LQIP).
+manifest.json wird erweitert.
+content-linker aktualisiert content/images.json (Pfad/ALT/SEO).
+create‑pull‑request erstellt den PR.
+Review/merge PR → Bilder gehen in main, content/images.json ist aktuell → Frontend nutzt die Daten sofort.
+Optional: Logos für Markenkarussell nachziehen (Workflow „Logos“) und im Frontend integrieren.
+
+Troubleshooting
+
+PR fehlt / keine Änderungen: Prüfe Actions‑Logs; ggf. wurden identische Dateien erzeugt → git commit ist „nothing to commit“.
+OpenAI Fehler (429/5xx): Retries greifen automatisch; ggf. OPENAI_MAX_RETRIES erhöhen.
+Transparenz erwartet, aber fehlt: Für echte Transparenz Edits mit background:'transparent' oder product_transparent/BG‑Removal nutzen.
+Seeds/Konstanz: OpenAI Images hat kein garantiertes Seed‑Interface; wenn Serien absolut konstant sein müssen, plane einen Zweit‑Provider (Stability/FLUX) – der Code ist erweiterbar.
+
+Anhänge
+A) Wichtige NPM‑Scripts (aus package.json)
+npm run gen:hero      # Beispiel Hero-Gen lokal
+npm run gen:product   # Produkt-Edit (eigene Fotos in input/product)
+npm run gen:logos     # Logo Cleanup/Vectorize (URL o. Pfad)
+npm run gen:auto      # Prompt-Build + Image-Gen (lokal)
+
+B) Umgebungsvariablen (.env.example)
+OPENAI_API_KEY=your_openai_key
+OPENAI_TIMEOUT_MS=180000
+OPENAI_MAX_RETRIES=3
+LOG_LEVEL=info
