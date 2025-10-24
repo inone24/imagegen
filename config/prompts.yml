@@ -1,0 +1,12 @@
+- preset: hero_photoreal
+  prompt: "Modern growshop interior, depth, rim light, subtle haze, jungle plants, clean shelving"
+- preset: slider_emotion
+  prompt: "Close-up of vapor swirls, glossy reflections, moody backdrop"
+- preset: product_studio
+  prompt: "Sleek glass bong, 65cm, clear borosilicate, on pure white, soft shadow"
+- preset: product_transparent
+  prompt: "Glass bong isolated, transparent background"
+- preset: icons_flat
+  prompt: "Set: leaf, grinder, bong, lighter, filtertip, rolling papers"
+- preset: logo_wordmark
+  prompt: "'GrowCologne' wordmark, modern grotesk, tight kerning, subtle leaf ligature on G"

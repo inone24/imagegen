@@ -1,0 +1,30 @@
+{
+  "name": "imagegen",
+  "version": "2.3.0",
+  "type": "module",
+  "description": "Web asset image generator with presets, Actions commit, logging, and fallbacks",
+  "scripts": {
+    "gen:hero": "node src/index.js --preset hero_photoreal --prompt 'Growshop Dortmund – jungle vibe, cinematic lighting'",
+    "gen:slider": "node src/index.js --preset slider_emotion --prompt 'Close-up vapor clouds, moody low key, macro texture' --count 4",
+    "gen:icons": "node src/svg-gen.js --set ui_basic --out public/img/icons",
+    "gen:product": "node src/edit.js input/product public/img/product isolate-white",
+    "gen:logos": "node src/logo-fix.js --url https://example.com/logo.png --out public/img/logos --vectorize --variants svg,png",
+    "gen:auto": "node src/prompt-builder.js --page '/produkte/glasbongs' --container 'hero' --out .tmp/prompt.json && node src/index.js --preset hero_photoreal --meta .tmp/prompt.json",
+    "lint": "node -e 'console.log("ok")'"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "dotenv": "^16.4.5",
+    "fast-xml-parser": "^4.5.1",
+    "js-yaml": "^4.1.0",
+    "openai": "^6.6.0",
+    "pino": "^10.1.0",
+    "sharp": "^0.33.4",
+    "yargs": "^17.7.2",
+    "@imgly/background-removal-node": "^1.4.0",
+    "potrace": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

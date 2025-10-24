@@ -1,0 +1,29 @@
+{
+  "containers": {
+    "hero": {
+      "style": "photorealistic, cinematic lighting, shallow depth of field, high dynamic range, natural color grading",
+      "avoid": "cartoonish, overprocessed, text overlay, extra limbs"
+    },
+    "slider": {
+      "style": "ultra-detailed macro, tactile textures, moody low-key lighting, realistic noise",
+      "avoid": "illustration, waxy skin, toyish look"
+    },
+    "product": {
+      "style": "studio product photography, high-key, soft gradient shadow, accurate proportions",
+      "avoid": "distorted labels, incorrect logos"
+    }
+  },
+  "topics": {
+    "glasbongs": {
+      "subject": "sleek glass bong",
+      "materials": "clear borosilicate glass",
+      "details": "soft studio shadow, 65cm size, clean reflections"
+    },
+    "vaporizer": {
+      "subject": "premium portable vaporizer",
+      "materials": "aluminum body, oled display",
+      "details": "soft side lighting, subtle steam trail"
+    }
+  },
+  "negatives": "text overlay, watermark, extra fingers, low detail"
+}
