@@ -1,2 +1,2 @@
 # imggenerator
-this is a image generator respority for connecting with codex
+This is an image generator repository for connecting with Codex
