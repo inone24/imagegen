@@ -1,20 +1,33 @@
 name: Publish Content
+
 on:
   workflow_dispatch:
     inputs:
       page:      { description: 'Page route (e.g., /produkte/glasbongs)', required: true, type: string }
       container: { description: 'hero|slider|product', required: true, default: 'hero', type: choice, options: [hero, slider, product] }
+      content_dir:{ description: 'Content dir', required: false, default: 'content', type: string }
+
 jobs:
   link-and-pr:
     runs-on: ubuntu-latest
-    permissions: { contents: write, pull-requests: write }
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
-        with: { node-version: '22.x', package-manager-cache: true }
+        with:
+          node-version: '22.x'
+          package-manager-cache: true
       - run: npm ci
+
       - name: Link latest asset to content
-        run: node src/content-linker.js --page "${{ github.event.inputs.page }}" --container "${{ github.event.inputs.container }}" --target content/images.json
+        run: |
+          node src/content-linker.js \
+            --page "${{ github.event.inputs.page }}" \
+            --container "${{ github.event.inputs.container }}" \
+            --target "${{ github.event.inputs.content_dir }}/images.json"
+
       - name: Create PR
         uses: peter-evans/create-pull-request@v7
         with:
