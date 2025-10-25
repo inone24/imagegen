@@ -1,5 +1,4 @@
 name: Logos
-
 on:
   workflow_dispatch:
     inputs:
@@ -7,7 +6,6 @@ on:
       filePath:  { description: 'Path within repo (optional)', required: false, type: string }
       vectorize: { description: 'SVG via tracing', required: false, default: 'true', type: boolean }
       variants:  { description: 'Outputs', required: false, default: 'svg,png', type: string }
-
 jobs:
   logos:
     runs-on: ubuntu-latest

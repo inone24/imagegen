@@ -1,11 +1,9 @@
 name: Publish Content
-
 on:
   workflow_dispatch:
     inputs:
       page:      { description: 'Page route (e.g., /produkte/glasbongs)', required: true, type: string }
       container: { description: 'hero|slider|product', required: true, default: 'hero', type: choice, options: [hero, slider, product] }
-
 jobs:
   link-and-pr:
     runs-on: ubuntu-latest

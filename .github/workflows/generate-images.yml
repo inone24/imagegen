@@ -1,12 +1,10 @@
 name: Generate Images
-
 on:
   workflow_dispatch:
     inputs:
       use_batch: { description: 'Use config/prompts.yml', required: false, default: 'true', type: boolean }
       preset:    { description: 'Single-run preset', required: false, type: string }
       prompt:    { description: 'Single-run prompt', required: false, type: string }
-
 jobs:
   gen:
     runs-on: ubuntu-latest
