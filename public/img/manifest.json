@@ -151,5 +151,37 @@
       "Pepperoni",
       "Photoreal"
     ]
+  },
+  {
+    "preset": "hero_photoreal",
+    "prompt": "Fotorealistisches Studio-Setup einer modernen Grow-Szene: Ein AC Infinity Controller ist seitlich am Zeltgestänge montiert (schwarzes Aluminium-Rohr, silbergraue Zeltplane leicht im Bild). Das Display zeigt deutsche UI und metrische Einheiten: 22 °C, 55 % rF, VPD 1,2 kPa; Modus AUTO, Wi-Fi-Symbol, Uhrzeit dezent; Klarheit wie beim Originalgerät (Icons/Typografie realitätsgetreu). Ein Sensorfühler mit schwarzem Kabel ist sauber verlegt, der Funksensor steht daneben. Rechts hinten im weichen Bokeh ein Smartphone mit der AC Infinity App, deutsch beschriftet, nur andeutungsweise lesbar. Hintergrund hell (weiche Weiß-/Grautöne, 5200 K), sanfte Softbox-Spiegelungen auf der Front. Ganz hinten, unscharf, fette White-Widow-Buds im Zelt, nur als atmosphärische Andeutung. Kamera: 50 mm, f/2.8, ISO 200, 1/125 s, Hochdynamik, feine Mikrotextur. Kein künstlicher Bloom, kein HDR-Look. Vermeiden: KI-Artefakte, CGI/Render-Look, übertriebene Unschärfe, Doppelkonturen, Farbsäume, Moiré, falsche Sprache/Einheiten (keine °F), falsche UI-Symbole, sichtbare Wasserzeichen, Textfehler, stumpfes Schwarz.",
+    "files": [
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-2880x1280.jpg",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-2880x1280.webp",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-2880x1280.avif",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-1920x960.jpg",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-1920x960.webp",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-1920x960.avif",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-1200x600.jpg",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-1200x600.webp",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-1200x600.avif"
+    ],
+    "createdAt": "2025-10-25T15:42:11.940Z",
+    "page": "/produkte/luefter",
+    "container": "hero",
+    "alt": "Hero: AC Infinity Controller am Zelt – deutsche UI mit 22 °C, 55 % rF, VPD 1,2 kPa; helles Studiolicht, White-Widow-Bokeh",
+    "description": "Helles, fotorealistisches Hero-Bild: AC Infinity Controller am Zeltgestänge, deutsche UI (°C, rF, VPD), App im Bokeh, dezente White-Widow-Anmutung.",
+    "keywords": [
+      "Lüftersteuerung",
+      "AC Infinity",
+      "Controller",
+      "Growzelt",
+      "22 °C",
+      "55 % rF",
+      "VPD 1,2 kPa",
+      "Wi-Fi",
+      "helles Setup",
+      "White Widow"
+    ]
   }
 ]

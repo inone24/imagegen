@@ -45,5 +45,25 @@
       ],
       "generatedAt": "2025-10-25T13:27:48.092Z"
     }
+  },
+  "/produkte/luefter": {
+    "hero": {
+      "file": "/workspaces/imagegen/public/img/hero/hero_photoreal-fotorealistisches-studio-setup-einer-mod-2025-10-25T15-41-45-818Z-01-2880x1280.jpg",
+      "alt": "Hero: AC Infinity Controller am Zelt – deutsche UI mit 22 °C, 55 % rF, VPD 1,2 kPa; helles Studiolicht, White-Widow-Bokeh",
+      "description": "Helles, fotorealistisches Hero-Bild: AC Infinity Controller am Zeltgestänge, deutsche UI (°C, rF, VPD), App im Bokeh, dezente White-Widow-Anmutung.",
+      "keywords": [
+        "Lüftersteuerung",
+        "AC Infinity",
+        "Controller",
+        "Growzelt",
+        "22 °C",
+        "55 % rF",
+        "VPD 1,2 kPa",
+        "Wi-Fi",
+        "helles Setup",
+        "White Widow"
+      ],
+      "generatedAt": "2025-10-25T15:42:11.940Z"
+    }
   }
 }
