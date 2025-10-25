@@ -9,3 +9,18 @@
 node_modules/
 .tmp/
 **/*.lqip.txt
+
+# do not version local deps and temp
+node_modules/
+.tmp/
+**/*.lqip.txt
+
+# do not version local deps and temp
+node_modules/
+.tmp/
+**/*.lqip.txt
+
+# do not version local deps and temp
+node_modules/
+.tmp/
+**/*.lqip.txt
