@@ -1,0 +1,35 @@
+name: Logos
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:       { description: 'Logo URL (optional)', required: false, type: string }
+      filePath:  { description: 'Path within repo (optional)', required: false, type: string }
+      vectorize: { description: 'SVG via tracing', required: false, default: 'true', type: boolean }
+      variants:  { description: 'Outputs', required: false, default: 'svg,png', type: string }
+
+jobs:
+  logos:
+    runs-on: ubuntu-latest
+    permissions: { contents: write, pull-requests: write }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with: { node-version: '22.x', package-manager-cache: true }
+      - run: npm ci
+      - name: Run logo fix
+        run: |
+          node src/logo-fix.js \
+            $([ -n "${{ github.event.inputs.url }}" ] && echo --url "${{ github.event.inputs.url }}") \
+            $([ -n "${{ github.event.inputs.filePath }}" ] && echo --file "${{ github.event.inputs.filePath }}") \
+            --vectorize "${{ github.event.inputs.vectorize }}" \
+            --variants "${{ github.event.inputs.variants }}" \
+            --out public/img/logos
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/logos-update
+          commit-message: "chore(logos): add/refresh brand logos"
+          title: "chore(logos): add/refresh brand logos"
+          body: "Automated logo cleanup/vectorization"
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>

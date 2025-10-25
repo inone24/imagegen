@@ -1,0 +1,38 @@
+name: Generate Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      use_batch: { description: 'Use config/prompts.yml', required: false, default: 'true', type: boolean }
+      preset:    { description: 'Single-run preset', required: false, type: string }
+      prompt:    { description: 'Single-run prompt', required: false, type: string }
+
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with: { node-version: '22.x', package-manager-cache: true }
+      - run: npm ci
+      - name: Run batch or single
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_TIMEOUT_MS: 180000
+          OPENAI_MAX_RETRIES: 3
+          LOG_LEVEL: info
+        run: |
+          if [ "${{ github.event.inputs.use_batch }}" = "true" ]; then
+            node -e "const YAML=require('js-yaml');const fs=require('fs');const list=YAML.load(fs.readFileSync('config/prompts.yml','utf8'));(async()=>{for(const t of list){const {execSync}=require('child_process');console.log('>>>',t.preset,t.prompt);execSync(`node src/index.js --preset \\\"${t.preset}\\\" --prompt \\\"${t.prompt}\\\"`,{stdio:'inherit'});}})()"
+          else
+            node src/index.js --preset "${{ github.event.inputs.preset }}" --prompt "${{ github.event.inputs.prompt }}"
+          fi
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/images-update
+          commit-message: "chore(imagegen): update assets"
+          title: "chore(imagegen): update assets"
+          body: "Automated image generation and asset update"
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>

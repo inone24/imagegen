@@ -1,0 +1,77 @@
+name: Orchestrate Images + Link + PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      page:       { description: 'Page route (e.g., /produkte/led-lampen)', required: true,  type: string }
+      container:  { description: 'hero|slider|product', required: true, default: 'hero', type: choice, options: [hero, slider, product] }
+      brand:      { description: 'Brand mood', required: false, default: 'GrowCologne', type: string }
+      keywords:   { description: 'CSV keywords', required: false, type: string }
+      desc:       { description: 'Short description/context', required: false, type: string }
+      preset:     { description: 'Preset', required: false, default: 'hero_photoreal', type: choice, options: [hero_photoreal, slider_emotion, product_studio, product_transparent] }
+      branch:     { description: 'Target branch (optional)', required: false, type: string }
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+    permissions: { contents: write, pull-requests: write }
+    concurrency:
+      group: orchestrate-${{ github.event.inputs.page }}-${{ github.event.inputs.container }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with: { node-version: '22.x', package-manager-cache: true }
+      - run: npm ci
+
+      - name: Build prompt meta
+        run: |
+          mkdir -p .tmp
+          node src/prompt-builder.js \
+            --page "${{ github.event.inputs.page }}" \
+            --container "${{ github.event.inputs.container }}" \
+            --brand "${{ github.event.inputs.brand }}" \
+            --keywords "${{ github.event.inputs.keywords }}" \
+            --desc "${{ github.event.inputs.desc }}" \
+            --out .tmp/prompt.json
+
+      - name: Generate images
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_TIMEOUT_MS: 180000
+          OPENAI_MAX_RETRIES: 3
+          LOG_LEVEL: info
+        run: |
+          node src/index.js --preset "${{ github.event.inputs.preset }}" --meta .tmp/prompt.json
+
+      - name: Link into content/images.json
+        run: |
+          node src/content-linker.js \
+            --page "${{ github.event.inputs.page }}" \
+            --container "${{ github.event.inputs.container }}" \
+            --target content/images.json
+
+      - name: Compute branch name
+        id: branch
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.branch }}" ]; then
+            echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
+          else
+            PAGE="${{ github.event.inputs.page }}"; CONTAINER="${{ github.event.inputs.container }}"; TS=$(date +%Y%m%d-%H%M%S)
+            slug(){ echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g'; }
+            echo "BRANCH=chore/orchestrate-$(slug "$PAGE")-$(slug "$CONTAINER")-$TS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: ${{ steps.branch.outputs.BRANCH }}
+          commit-message: "chore(orchestrate): images + linkage for ${{ github.event.inputs.page }} (${{ github.event.inputs.container }})"
+          title: "Orchestrate: ${{ github.event.inputs.page }} • ${{ github.event.inputs.container }}"
+          body: |
+            Automated orchestration:
+            - Prompt from page/container/brand/keywords/desc
+            - Generated images via preset `${{ github.event.inputs.preset }}`
+            - Linked in `content/images.json`
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>

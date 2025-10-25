@@ -1,0 +1,31 @@
+name: Publish Content
+
+on:
+  workflow_dispatch:
+    inputs:
+      page:      { description: 'Page route (e.g., /produkte/glasbongs)', required: true, type: string }
+      container: { description: 'hero|slider|product', required: true, default: 'hero', type: choice, options: [hero, slider, product] }
+
+jobs:
+  link-and-pr:
+    runs-on: ubuntu-latest
+    permissions: { contents: write, pull-requests: write }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with: { node-version: '22.x', package-manager-cache: true }
+      - run: npm ci
+      - name: Link latest asset to content
+        run: |
+          node src/content-linker.js \
+            --page "${{ github.event.inputs.page }}" \
+            --container "${{ github.event.inputs.container }}" \
+            --target content/images.json
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/content-links
+          commit-message: "chore(content): link images for ${{ github.event.inputs.page }} @ ${{ github.event.inputs.container }}"
+          title: "Link images for ${{ github.event.inputs.page }}"
+          body: "Automated content linkage update."
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
