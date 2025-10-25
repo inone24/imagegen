@@ -8,45 +8,78 @@ on:
       brand:      { description: 'Brand mood', required: false, default: 'GrowCologne', type: string }
       keywords:   { description: 'CSV keywords', required: false, type: string }
       desc:       { description: 'Short description', required: false, type: string }
-      preset:     { description: 'Preset', required: false, default: 'hero_photoreal', type: choice, options: [hero_photoreal, slider_emotion, product_studio, product_transparent] }
+      preset:     { description: 'Preset', required: false, default: 'hero_photoreal', type: choice,
+                    options: [hero_photoreal, slider_emotion, product_studio, product_transparent] }
       branch:     { description: 'Target branch name (optional)', required: false, type: string }
+      public_dir: { description: 'Web public dir', required: false, default: 'public', type: string }
+      content_dir:{ description: 'Content dir', required: false, default: 'content', type: string }
 
   workflow_call:
     inputs:
-      page:      { required: true,  type: string }
-      container: { required: true,  type: string }
-      brand:     { required: false, type: string, default: 'GrowCologne' }
-      keywords:  { required: false, type: string }
-      desc:      { required: false, type: string }
-      preset:    { required: false, type: string, default: 'hero_photoreal' }
-      branch:    { required: false, type: string }
-      # optional: Pfade im Zielrepo überschreiben (falls nicht /public & /content)
+      page:        { required: true,  type: string }
+      container:   { required: true,  type: string }
+      brand:       { required: false, type: string, default: 'GrowCologne' }
+      keywords:    { required: false, type: string }
+      desc:        { required: false, type: string }
+      preset:      { required: false, type: string, default: 'hero_photoreal' }
+      branch:      { required: false, type: string }
       public_dir:  { required: false, type: string, default: 'public' }
       content_dir: { required: false, type: string, default: 'content' }
     secrets:
       OPENAI_API_KEY: { required: true }
+
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
-    permissions: { contents: write, pull-requests: write }
+    permissions:
+      contents: write
+      pull-requests: write
     concurrency:
-      group: orchestrate-${{ github.event.inputs.page }}-${{ github.event.inputs.container }}
+      group: orchestrate-${{ (inputs.page || github.event.inputs.page) }}-${{ (inputs.container || github.event.inputs.container) }}
       cancel-in-progress: false
+
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-node@v6
-        with: { node-version: '22.x', package-manager-cache: true }
-      - run: npm ci
+        with:
+          node-version: '22.x'
+          package-manager-cache: true
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Resolve inputs
+        id: cfg
+        shell: bash
+        run: |
+          PAGE="${{ inputs.page || github.event.inputs.page }}"
+          CONTAINER="${{ inputs.container || github.event.inputs.container }}"
+          BRAND="${{ inputs.brand || github.event.inputs.brand }}"
+          KEYWORDS="${{ inputs.keywords || github.event.inputs.keywords }}"
+          DESC="${{ inputs.desc || github.event.inputs.desc }}"
+          PRESET="${{ inputs.preset || github.event.inputs.preset }}"
+          PUBDIR="${{ inputs.public_dir || github.event.inputs.public_dir || 'public' }}"
+          CONTDIR="${{ inputs.content_dir || github.event.inputs.content_dir || 'content' }}"
+          echo "page=$PAGE" >> $GITHUB_OUTPUT
+          echo "container=$CONTAINER" >> $GITHUB_OUTPUT
+          echo "brand=$BRAND" >> $GITHUB_OUTPUT
+          echo "keywords=$KEYWORDS" >> $GITHUB_OUTPUT
+          echo "desc=$DESC" >> $GITHUB_OUTPUT
+          echo "preset=${PRESET:-hero_photoreal}" >> $GITHUB_OUTPUT
+          echo "public_dir=$PUBDIR" >> $GITHUB_OUTPUT
+          echo "content_dir=$CONTDIR" >> $GITHUB_OUTPUT
+          echo "PUBLIC_DIR=$PUBDIR" >> $GITHUB_ENV
 
       - name: Build prompt meta
         run: |
           mkdir -p .tmp
           node src/prompt-builder.js \
-            --page "${{ github.event.inputs.page }}" \
-            --container "${{ github.event.inputs.container }}" \
-            --brand "${{ github.event.inputs.brand }}" \
-            --keywords "${{ github.event.inputs.keywords }}" \
-            --desc "${{ github.event.inputs.desc }}" \
+            --page "${{ steps.cfg.outputs.page }}" \
+            --container "${{ steps.cfg.outputs.container }}" \
+            --brand "${{ steps.cfg.outputs.brand }}" \
+            --keywords "${{ steps.cfg.outputs.keywords }}" \
+            --desc "${{ steps.cfg.outputs.desc }}" \
             --out .tmp/prompt.json
 
       - name: Generate images
@@ -55,19 +88,26 @@ jobs:
           OPENAI_TIMEOUT_MS: 180000
           OPENAI_MAX_RETRIES: 3
           LOG_LEVEL: info
-        run: node src/index.js --preset "${{ github.event.inputs.preset }}" --meta .tmp/prompt.json
+        run: |
+          node src/index.js \
+            --preset "${{ steps.cfg.outputs.preset }}" \
+            --meta .tmp/prompt.json
 
-      - name: Link into content/images.json
-        run: node src/content-linker.js --page "${{ github.event.inputs.page }}" --container "${{ github.event.inputs.container }}" --target content/images.json
+      - name: Link image into content/images.json
+        run: |
+          node src/content-linker.js \
+            --page "${{ steps.cfg.outputs.page }}" \
+            --container "${{ steps.cfg.outputs.container }}" \
+            --target "${{ steps.cfg.outputs.content_dir }}/images.json"
 
       - name: Compute branch name
         id: branch
         shell: bash
         run: |
-          if [ -n "${{ github.event.inputs.branch }}" ]; then
-            echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_OUTPUT
+          if [ -n "${{ inputs.branch || github.event.inputs.branch }}" ]; then
+            echo "BRANCH=${{ inputs.branch || github.event.inputs.branch }}" >> $GITHUB_OUTPUT
           else
-            PAGE="${{ github.event.inputs.page }}"; CONTAINER="${{ github.event.inputs.container }}"; TS=$(date +%Y%m%d-%H%M%S)
+            PAGE="${{ steps.cfg.outputs.page }}"; CONTAINER="${{ steps.cfg.outputs.container }}"; TS=$(date +%Y%m%d-%H%M%S)
             slug(){ echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g'; }
             echo "BRANCH=chore/orchestrate-$(slug "$PAGE")-$(slug "$CONTAINER")-$TS" >> $GITHUB_OUTPUT
           fi
@@ -76,11 +116,11 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           branch: ${{ steps.branch.outputs.BRANCH }}
-          commit-message: "chore(orchestrate): images + linkage for ${{ github.event.inputs.page }} (${{ github.event.inputs.container }})"
-          title: "Orchestrate: ${{ github.event.inputs.page }} • ${{ github.event.inputs.container }}"
+          commit-message: "chore(orchestrate): images + linkage for ${{ steps.cfg.outputs.page }} (${{ steps.cfg.outputs.container }})"
+          title: "Orchestrate: ${{ steps.cfg.outputs.page }} • ${{ steps.cfg.outputs.container }}"
           body: |
             Automated orchestration:
             - Prompt from page/container/brand/keywords/desc
-            - Generated images via preset `${{ github.event.inputs.preset }}`
-            - Linked in `content/images.json`
+            - Generated images via preset `${{ steps.cfg.outputs.preset }}`
+            - Linked in `${{ steps.cfg.outputs.content_dir }}/images.json`
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
