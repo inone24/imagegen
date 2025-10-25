@@ -31,9 +31,7 @@ on:
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: { contents: write, pull-requests: write }
     concurrency:
       group: orchestrate-${{ (inputs.page || github.event.inputs.page) }}-${{ (inputs.container || github.event.inputs.container) }}
       cancel-in-progress: false
@@ -82,6 +80,19 @@ jobs:
             --desc "${{ steps.cfg.outputs.desc }}" \
             --out .tmp/prompt.json
 
+      - name: Read manifest length (before)
+        id: mlen
+        shell: bash
+        run: |
+          FILE="${{ steps.cfg.outputs.public_dir }}/img/manifest.json"
+          if [ -f "$FILE" ]; then
+            LEN=$(node -e "try{console.log(require('fs').readFileSync(process.argv[1],'utf8') ? JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).length : 0)}catch(e){console.log(0)}" "$FILE")
+          else
+            LEN=0
+          fi
+          echo "$LEN" > .tmp/manifest_before.txt
+          echo "before=$LEN" >> $GITHUB_OUTPUT
+
       - name: Generate images
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -93,12 +104,15 @@ jobs:
             --preset "${{ steps.cfg.outputs.preset }}" \
             --meta .tmp/prompt.json
 
-      - name: Link image into content/images.json
+      - name: Link image(s) into content/images.json
         run: |
+          FROM=$(cat .tmp/manifest_before.txt)
           node src/content-linker.js \
             --page "${{ steps.cfg.outputs.page }}" \
             --container "${{ steps.cfg.outputs.container }}" \
-            --target "${{ steps.cfg.outputs.content_dir }}/images.json"
+            --target "${{ steps.cfg.outputs.content_dir }}/images.json" \
+            --preset "${{ steps.cfg.outputs.preset }}" \
+            --from-index "$FROM"
 
       - name: Compute branch name
         id: branch
