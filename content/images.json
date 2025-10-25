@@ -7,5 +7,43 @@
       "keywords": [],
       "generatedAt": "2025-10-25T13:09:08.574Z"
     }
+  },
+  "/produkte/led-lampen": {
+    "hero": {
+      "file": "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-2880x1280.jpg",
+      "alt": "Hero: EVO-6-Style LED-Growlampe in moderner Jungle-Fabrik – Fließband, Roboterarme, Endmontage im Growzelt mit Pepperoni-Pflanzen",
+      "description": "Cinematic LED-Growlight Factory – Fließband + Roboterarme, Jungle-Fassade, Endmontage im Growzelt mit Pepperoni-Pflanzen.",
+      "keywords": [
+        "LED Lampe",
+        "Grow Light",
+        "Sanlight EVO6 Style",
+        "Roboterarme",
+        "Fließband",
+        "Growzelt",
+        "Pepperoni",
+        "Factory",
+        "Jungle",
+        "Photoreal"
+      ],
+      "generatedAt": "2025-10-25T13:26:06.498Z"
+    },
+    "slider": {
+      "file": "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-47-441Z-04-1600x900.jpg",
+      "alt": "Macro: LED-Growlampe – Roboter-Greifer, Heatsink-Lamellen, Dioden-Makro, Pepperoni-Blatt im Zelt",
+      "description": "Emotion Slider – haptische Makros aus der LED-Growlight-Fertigung & Growzelt.",
+      "keywords": [
+        "LED Lampe",
+        "Grow Light",
+        "Makro",
+        "Heatsink",
+        "Dioden",
+        "Roboter",
+        "Fließband",
+        "Growzelt",
+        "Pepperoni",
+        "Photoreal"
+      ],
+      "generatedAt": "2025-10-25T13:27:48.092Z"
+    }
   }
 }

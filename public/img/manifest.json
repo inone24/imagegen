@@ -19,5 +19,137 @@
     "alt": null,
     "description": null,
     "keywords": []
+  },
+  {
+    "preset": "hero_photoreal",
+    "prompt": "Ultra-real, cinematic factory scene: a high-tech LED-grow-light assembly line with conveyor belts and robotic arms assembling EVO-6-style LED bars (long parallel light strips, aluminum heatsink, slim driver). The factory is wrapped in a JUNGLE bio-envelope – lush greenery enters from side walls and ceiling, yet the line stays clean, modern and precise. In the back-right, final assembly inside a grow tent: pepper plants (capsicum) under a powered LED fixture glowing naturally (no text on device). Subtle haze, volumetric light shafts, fine dust motes, deep depth of field; 35-50mm lens; natural color grading; realistic reflections on aluminum and glass. Avoid: cartoon, CGI look, text overlay, logos, watermark.",
+    "files": [
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-2880x1280.jpg",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-2880x1280.webp",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-2880x1280.avif",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-1920x960.jpg",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-1920x960.webp",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-1920x960.avif",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-1200x600.jpg",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-1200x600.webp",
+      "/workspaces/imagegen/public/img/hero/hero_photoreal-ultra-real-cinematic-factory-scene-a-hig-2025-10-25T13-25-43-431Z-01-1200x600.avif"
+    ],
+    "createdAt": "2025-10-25T13:26:06.498Z",
+    "page": "/produkte/led-lampen",
+    "container": "hero",
+    "alt": "Hero: EVO-6-Style LED-Growlampe in moderner Jungle-Fabrik – Fließband, Roboterarme, Endmontage im Growzelt mit Pepperoni-Pflanzen",
+    "description": "Cinematic LED-Growlight Factory – Fließband + Roboterarme, Jungle-Fassade, Endmontage im Growzelt mit Pepperoni-Pflanzen.",
+    "keywords": [
+      "LED Lampe",
+      "Grow Light",
+      "Sanlight EVO6 Style",
+      "Roboterarme",
+      "Fließband",
+      "Growzelt",
+      "Pepperoni",
+      "Factory",
+      "Jungle",
+      "Photoreal"
+    ]
+  },
+  {
+    "preset": "slider_emotion",
+    "prompt": "Ultra-detailed macro close-ups from a cutting-edge LED-growlight assembly: robotic gripper placing a LED board into an aluminum heatsink; PCB diodes and lenses with natural micro-reflections; heatsink fins with soft glow and fine machining marks; pepper plant leaves inside a grow tent lit by the LED spectrum (no text on device). Moody low-key, tactile textures, realistic sensor noise, shallow depth of field; avoid cartoon/CGI look and watermark.",
+    "files": [
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-45-726Z-01-1600x900.jpg",
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-45-726Z-01-1600x900.webp"
+    ],
+    "createdAt": "2025-10-25T13:27:46.294Z",
+    "page": "/produkte/led-lampen",
+    "container": "slider",
+    "alt": "Macro: LED-Growlampe – Roboter-Greifer, Heatsink-Lamellen, Dioden-Makro, Pepperoni-Blatt im Zelt",
+    "description": "Emotion Slider – haptische Makros aus der LED-Growlight-Fertigung & Growzelt.",
+    "keywords": [
+      "LED Lampe",
+      "Grow Light",
+      "Makro",
+      "Heatsink",
+      "Dioden",
+      "Roboter",
+      "Fließband",
+      "Growzelt",
+      "Pepperoni",
+      "Photoreal"
+    ]
+  },
+  {
+    "preset": "slider_emotion",
+    "prompt": "Ultra-detailed macro close-ups from a cutting-edge LED-growlight assembly: robotic gripper placing a LED board into an aluminum heatsink; PCB diodes and lenses with natural micro-reflections; heatsink fins with soft glow and fine machining marks; pepper plant leaves inside a grow tent lit by the LED spectrum (no text on device). Moody low-key, tactile textures, realistic sensor noise, shallow depth of field; avoid cartoon/CGI look and watermark.",
+    "files": [
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-46-294Z-02-1600x900.jpg",
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-46-294Z-02-1600x900.webp"
+    ],
+    "createdAt": "2025-10-25T13:27:46.870Z",
+    "page": "/produkte/led-lampen",
+    "container": "slider",
+    "alt": "Macro: LED-Growlampe – Roboter-Greifer, Heatsink-Lamellen, Dioden-Makro, Pepperoni-Blatt im Zelt",
+    "description": "Emotion Slider – haptische Makros aus der LED-Growlight-Fertigung & Growzelt.",
+    "keywords": [
+      "LED Lampe",
+      "Grow Light",
+      "Makro",
+      "Heatsink",
+      "Dioden",
+      "Roboter",
+      "Fließband",
+      "Growzelt",
+      "Pepperoni",
+      "Photoreal"
+    ]
+  },
+  {
+    "preset": "slider_emotion",
+    "prompt": "Ultra-detailed macro close-ups from a cutting-edge LED-growlight assembly: robotic gripper placing a LED board into an aluminum heatsink; PCB diodes and lenses with natural micro-reflections; heatsink fins with soft glow and fine machining marks; pepper plant leaves inside a grow tent lit by the LED spectrum (no text on device). Moody low-key, tactile textures, realistic sensor noise, shallow depth of field; avoid cartoon/CGI look and watermark.",
+    "files": [
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-46-871Z-03-1600x900.jpg",
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-46-871Z-03-1600x900.webp"
+    ],
+    "createdAt": "2025-10-25T13:27:47.441Z",
+    "page": "/produkte/led-lampen",
+    "container": "slider",
+    "alt": "Macro: LED-Growlampe – Roboter-Greifer, Heatsink-Lamellen, Dioden-Makro, Pepperoni-Blatt im Zelt",
+    "description": "Emotion Slider – haptische Makros aus der LED-Growlight-Fertigung & Growzelt.",
+    "keywords": [
+      "LED Lampe",
+      "Grow Light",
+      "Makro",
+      "Heatsink",
+      "Dioden",
+      "Roboter",
+      "Fließband",
+      "Growzelt",
+      "Pepperoni",
+      "Photoreal"
+    ]
+  },
+  {
+    "preset": "slider_emotion",
+    "prompt": "Ultra-detailed macro close-ups from a cutting-edge LED-growlight assembly: robotic gripper placing a LED board into an aluminum heatsink; PCB diodes and lenses with natural micro-reflections; heatsink fins with soft glow and fine machining marks; pepper plant leaves inside a grow tent lit by the LED spectrum (no text on device). Moody low-key, tactile textures, realistic sensor noise, shallow depth of field; avoid cartoon/CGI look and watermark.",
+    "files": [
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-47-441Z-04-1600x900.jpg",
+      "/workspaces/imagegen/public/img/slider/slider_emotion-ultra-detailed-macro-close-ups-from-a-cu-2025-10-25T13-27-47-441Z-04-1600x900.webp"
+    ],
+    "createdAt": "2025-10-25T13:27:48.092Z",
+    "page": "/produkte/led-lampen",
+    "container": "slider",
+    "alt": "Macro: LED-Growlampe – Roboter-Greifer, Heatsink-Lamellen, Dioden-Makro, Pepperoni-Blatt im Zelt",
+    "description": "Emotion Slider – haptische Makros aus der LED-Growlight-Fertigung & Growzelt.",
+    "keywords": [
+      "LED Lampe",
+      "Grow Light",
+      "Makro",
+      "Heatsink",
+      "Dioden",
+      "Roboter",
+      "Fließband",
+      "Growzelt",
+      "Pepperoni",
+      "Photoreal"
+    ]
   }
 ]
