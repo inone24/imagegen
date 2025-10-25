@@ -1,19 +1,25 @@
 name: Generate Images
+
 on:
   workflow_dispatch:
     inputs:
       use_batch: { description: 'Use config/prompts.yml', required: false, default: 'true', type: boolean }
       preset:    { description: 'Single-run preset', required: false, type: string }
       prompt:    { description: 'Single-run prompt', required: false, type: string }
+
 jobs:
   gen:
     runs-on: ubuntu-latest
-    permissions: { contents: write }
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v6
-        with: { node-version: '22.x', package-manager-cache: true }
+        with:
+          node-version: '22.x'
+          package-manager-cache: true
       - run: npm ci
+
       - name: Run batch or single
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -26,6 +32,7 @@ jobs:
           else
             node src/index.js --preset "${{ github.event.inputs.preset }}" --prompt "${{ github.event.inputs.prompt }}"
           fi
+
       - name: Create PR
         uses: peter-evans/create-pull-request@v7
         with:
