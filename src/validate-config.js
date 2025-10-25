@@ -1,9 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-import Ajv from 'ajv';
+import Ajv2020 from 'ajv/dist/2020.js';
 import { logger } from './logger.js';
 
-const ajv = new Ajv({ allErrors: true });
+// Ajv 2020-12-Engine (bringt das Draft-2020-12-Metaschema mit)
+const ajv = new Ajv2020({
+  allErrors: true,
+  strict: false
+});
 
 export function validatePresets(){
   const schema = JSON.parse(fs.readFileSync(path.join('config','schema','presets.schema.json'),'utf8'));

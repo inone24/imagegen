@@ -17,6 +17,15 @@ const argv = yargs(hideBin(process.argv))
   .strict()
   .parse();
 
+if (!process.env.OPENAI_API_KEY) {
+  console.error(
+    "❌ OPENAI_API_KEY fehlt.\n" +
+    "Nutze den Orchestrator-Workflow (Actions), oder setze lokal temporär:\n" +
+    "  export OPENAI_API_KEY=sk-... && node src/index.js --preset ...\n"
+  );
+  process.exit(1);
+}
+
 const presets = validatePresets();
 const preset = presets[argv.preset];
 if (!preset) { logger.error({ preset: argv.preset }, 'Unknown preset'); process.exit(1); }

@@ -10,7 +10,7 @@
     "gen:product": "node src/edit.js input/product public/img/product isolate-white",
     "gen:logos": "node src/logo-fix.js --url https://example.com/logo.png --out public/img/logos --vectorize --variants svg,png",
     "gen:auto": "node src/prompt-builder.js --page '/produkte/glasbongs' --container 'hero' --out .tmp/prompt.json && node src/index.js --preset hero_photoreal --meta .tmp/prompt.json",
-    "lint": "node -e 'console.log("ok")'"
+    "lint": "node -e 'console.log(\"ok\")'"
   },
   "dependencies": {
     "ajv": "^8.17.1",

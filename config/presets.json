@@ -9,11 +9,7 @@
       "negative": "cartoonish, cgi, 3d render look, overprocessed, low detail, text overlay"
     },
     "provider": "openai",
-    "options": {
-      "count": 1,
-      "size": "2048x2048",
-      "transparent": false
-    },
+    "options": { "count": 1, "size": "1536x1024", "transparent": false },
     "output_subdir": "hero"
   },
   "slider_emotion": {
@@ -26,7 +22,7 @@
       "negative": "illustration, toyish, waxy skin, text artifacts"
     },
     "provider": "openai",
-    "options": { "count": 4, "size": "1024x1024", "transparent": false },
+    "options": { "count": 4, "size": "1024x1536", "transparent": false },
     "output_subdir": "slider"
   },
   "product_studio": {
@@ -47,7 +43,7 @@
     "sizes": [[1200, 1200]],
     "formats": ["png", "webp"],
     "quality": 100,
-    "style": {"base": "studio cutout, natural shadows", "negative": "aliasing"},
+    "style": { "base": "studio cutout, natural shadows", "negative": "aliasing" },
     "provider": "openai",
     "options": { "count": 1, "size": "1024x1024", "transparent": true },
     "output_subdir": "product"
@@ -57,6 +53,9 @@
     "sizes": [[256, 256]],
     "formats": ["png"],
     "quality": 100,
+    "style": { "base": "monochrome, 24x24 grid, 2px stroke, rounded caps", "negative": "fills, fonts, gradients" },
+    "provider": "openai",
+    "options": { "count": 1, "size": "1024x1024", "transparent": true },
     "svg": true,
     "output_subdir": "icons"
   },
@@ -64,6 +63,10 @@
     "description": "Wordmark exploration as SVG",
     "sizes": [],
     "formats": [],
+    "quality": 100,
+    "style": { "base": "modern grotesk, tight kerning, clean vectors", "negative": "pixelation, artifacts" },
+    "provider": "openai",
+    "options": { "count": 1, "size": "1024x1024", "transparent": true },
     "svg": true,
     "output_subdir": "logos"
   }

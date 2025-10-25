@@ -1,1 +1,11 @@
-{}
+{
+  "/produkte/glasbongs": {
+    "hero": {
+      "file": "/workspaces/imagegen/public/img/hero/hero_photoreal-growshop-interior-cinematic-2025-10-25T13-08-49-053Z-01-2880x1280.jpg",
+      "alt": "Growshop interior, cinematic",
+      "description": null,
+      "keywords": [],
+      "generatedAt": "2025-10-25T13:09:08.574Z"
+    }
+  }
+}
