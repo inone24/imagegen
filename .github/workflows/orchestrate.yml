@@ -1,14 +1,30 @@
 name: Orchestrate Images + Link + PR
+
 on:
   workflow_dispatch:
     inputs:
-      page:       { description: 'Page route (e.g., /produkte/led-lampen)', required: true,  type: string }
+      page:       { description: 'Page route', required: true, type: string }
       container:  { description: 'hero|slider|product', required: true, default: 'hero', type: choice, options: [hero, slider, product] }
       brand:      { description: 'Brand mood', required: false, default: 'GrowCologne', type: string }
       keywords:   { description: 'CSV keywords', required: false, type: string }
-      desc:       { description: 'Short description/context', required: false, type: string }
+      desc:       { description: 'Short description', required: false, type: string }
       preset:     { description: 'Preset', required: false, default: 'hero_photoreal', type: choice, options: [hero_photoreal, slider_emotion, product_studio, product_transparent] }
-      branch:     { description: 'Target branch (optional)', required: false, type: string }
+      branch:     { description: 'Target branch name (optional)', required: false, type: string }
+
+  workflow_call:
+    inputs:
+      page:      { required: true,  type: string }
+      container: { required: true,  type: string }
+      brand:     { required: false, type: string, default: 'GrowCologne' }
+      keywords:  { required: false, type: string }
+      desc:      { required: false, type: string }
+      preset:    { required: false, type: string, default: 'hero_photoreal' }
+      branch:    { required: false, type: string }
+      # optional: Pfade im Zielrepo überschreiben (falls nicht /public & /content)
+      public_dir:  { required: false, type: string, default: 'public' }
+      content_dir: { required: false, type: string, default: 'content' }
+    secrets:
+      OPENAI_API_KEY: { required: true }
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
