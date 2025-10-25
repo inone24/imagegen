@@ -14,11 +14,7 @@ jobs:
         with: { node-version: '22.x', package-manager-cache: true }
       - run: npm ci
       - name: Link latest asset to content
-        run: |
-          node src/content-linker.js \
-            --page "${{ github.event.inputs.page }}" \
-            --container "${{ github.event.inputs.container }}" \
-            --target content/images.json
+        run: node src/content-linker.js --page "${{ github.event.inputs.page }}" --container "${{ github.event.inputs.container }}" --target content/images.json
       - name: Create PR
         uses: peter-evans/create-pull-request@v7
         with:

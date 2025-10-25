@@ -21,6 +21,7 @@ jobs:
       - uses: actions/setup-node@v6
         with: { node-version: '22.x', package-manager-cache: true }
       - run: npm ci
+
       - name: Build prompt meta
         run: |
           mkdir -p .tmp
@@ -31,20 +32,18 @@ jobs:
             --keywords "${{ github.event.inputs.keywords }}" \
             --desc "${{ github.event.inputs.desc }}" \
             --out .tmp/prompt.json
+
       - name: Generate images
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_TIMEOUT_MS: 180000
           OPENAI_MAX_RETRIES: 3
           LOG_LEVEL: info
-        run: |
-          node src/index.js --preset "${{ github.event.inputs.preset }}" --meta .tmp/prompt.json
+        run: node src/index.js --preset "${{ github.event.inputs.preset }}" --meta .tmp/prompt.json
+
       - name: Link into content/images.json
-        run: |
-          node src/content-linker.js \
-            --page "${{ github.event.inputs.page }}" \
-            --container "${{ github.event.inputs.container }}" \
-            --target content/images.json
+        run: node src/content-linker.js --page "${{ github.event.inputs.page }}" --container "${{ github.event.inputs.container }}" --target content/images.json
+
       - name: Compute branch name
         id: branch
         shell: bash
@@ -56,6 +55,7 @@ jobs:
             slug(){ echo "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g'; }
             echo "BRANCH=chore/orchestrate-$(slug "$PAGE")-$(slug "$CONTAINER")-$TS" >> $GITHUB_OUTPUT
           fi
+
       - name: Create PR
         uses: peter-evans/create-pull-request@v7
         with:
